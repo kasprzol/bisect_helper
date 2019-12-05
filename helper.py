@@ -23,12 +23,14 @@ class BisectHelper(collections.abc.Sequence):
         for path_component in self.access_path:
             try:
                 value = getattr(value, path_component)
+                if callable(value):
+                    value = value()
             except AttributeError:
                 try:
                     try:
                         value = value[path_component]
                     except TypeError:
-                        # can't index list with "1", have to use 0
+                        # can't index list with "1", have to use inr("1")
                         # TODO: maybe add a format specifier to access path?
                         value = value[int(path_component)]
                 except KeyError:

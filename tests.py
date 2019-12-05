@@ -43,3 +43,18 @@ def test_simple_bisect():
     helper = BisectHelper(collection, "age")
 
     assert bisect.bisect_left(helper, 39) == 1
+
+
+def test_callable():
+    class C:
+        def __init__(self, bar):
+            self.bar = bar
+
+        def foo(self):
+            return self.bar
+
+    items = [{"baz": C(42)}]
+
+    helper = BisectHelper(items, "baz.foo")
+
+    assert helper[0] == 42
